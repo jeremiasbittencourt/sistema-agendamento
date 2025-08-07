@@ -1,0 +1,141 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">
+          <i class="bi bi-person-lines-fill me-2"></i>
+          {{ mostrandoFavoritos ? 'Contatos Favoritos' : 'Lista de Contatos' }}
+        </h2>
+        <button class="btn btn-primary" routerLink="/contatos/novo">
+          <i class="bi bi-plus-circle me-2"></i>
+          Novo Contato
+        </button>
+      </div>
+
+      <!-- Barra de busca e filtros -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="input-group">
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Buscar por nome, celular, telefone ou email..."
+                  [(ngModel)]="termoBusca"
+                  (keyup.enter)="buscarContatos()">
+                <button 
+                  class="btn btn-outline-secondary" 
+                  type="button"
+                  (click)="buscarContatos()">
+                  <i class="bi bi-search"></i>
+                </button>
+                <button 
+                  class="btn btn-outline-secondary" 
+                  type="button"
+                  (click)="limparBusca()">
+                  <i class="bi bi-x-circle"></i>
+                </button>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <button 
+                class="btn w-100"
+                [class.btn-warning]="mostrandoFavoritos"
+                [class.btn-outline-warning]="!mostrandoFavoritos"
+                (click)="alternarFiltroFavoritos()">
+                <i class="bi bi-star-fill me-2"></i>
+                {{ mostrandoFavoritos ? 'Mostrar Todos' : 'Apenas Favoritos' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="carregando" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Carregando...</span>
+        </div>
+        <p class="mt-2">Carregando contatos...</p>
+      </div>
+
+      <!-- Lista de contatos -->
+      <div *ngIf="!carregando && contatosFiltrados.length === 0" class="text-center py-5">
+        <i class="bi bi-person-x display-1 text-muted"></i>
+        <h4 class="text-muted mt-3">
+          {{ mostrandoFavoritos ? 'Nenhum contato favorito encontrado' : 'Nenhum contato encontrado' }}
+        </h4>
+        <p class="text-muted">
+          {{ mostrandoFavoritos 
+            ? 'Adicione contatos aos favoritos para vê-los aqui.' 
+            : 'Adicione seu primeiro contato clicando no botão "Novo Contato".' }}
+        </p>
+      </div>
+
+      <div *ngIf="!carregando && contatosFiltrados.length > 0" class="row">
+        <div *ngFor="let contato of contatosFiltrados" class="col-md-6 col-lg-4 mb-3">
+          <div class="card h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <h5 class="card-title mb-0">{{ contato.nome }}</h5>
+                <div class="btn-group" role="group">
+                  <button 
+                    class="btn btn-sm"
+                    [class.btn-warning]="contato.favorito"
+                    [class.btn-outline-warning]="!contato.favorito"
+                    (click)="alternarFavorito(contato)"
+                    [title]="contato.favorito ? 'Remover dos favoritos' : 'Adicionar aos favoritos'">
+                    <i class="bi" [class.bi-star-fill]="contato.favorito" [class.bi-star]="!contato.favorito"></i>
+                  </button>
+                  <button 
+                    class="btn btn-sm btn-outline-primary"
+                    [routerLink]="['/contatos/editar', contato.id]"
+                    title="Editar">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button 
+                    class="btn btn-sm btn-outline-danger"
+                    (click)="inativarContato(contato)"
+                    title="Inativar">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="mb-2">
+                <small class="text-muted">
+                  <i class="bi bi-telephone me-1"></i>
+                  {{ formatarCelular(contato.celular) }}
+                </small>
+              </div>
+              
+              <div *ngIf="contato.telefone" class="mb-2">
+                <small class="text-muted">
+                  <i class="bi bi-telephone-fill me-1"></i>
+                  {{ formatarTelefone(contato.telefone) }}
+                </small>
+              </div>
+              
+              <div *ngIf="contato.email" class="mb-2">
+                <small class="text-muted">
+                  <i class="bi bi-envelope me-1"></i>
+                  {{ contato.email }}
+                </small>
+              </div>
+              
+              <div class="mt-auto">
+                <span *ngIf="contato.favorito" class="badge bg-warning text-dark me-1">
+                  <i class="bi bi-star-fill me-1"></i>Favorito
+                </span>
+                <small class="text-muted">
+                  Cadastrado em: {{ contato.dataCadastro | date:'dd/MM/yyyy HH:mm' }}
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

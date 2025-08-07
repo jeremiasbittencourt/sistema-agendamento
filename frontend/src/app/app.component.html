@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/contatos">
+      <i class="bi bi-person-lines-fill me-2"></i>
+      Sistema de Agendamento
+    </a>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/contatos" routerLinkActive="active">
+            <i class="bi bi-list me-1"></i>Contatos
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/contatos/favoritos" routerLinkActive="active">
+            <i class="bi bi-star me-1"></i>Favoritos
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/contatos/novo" routerLinkActive="active">
+            <i class="bi bi-plus-circle me-1"></i>Novo Contato
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="bg-light py-4 mt-5">
+  <div class="container text-center">
+    <p class="text-muted mb-0">
+      Sistema de Agendamento Telefônico - Desenvolvido com Angular e Spring Boot
+    </p>
+  </div>
+</footer>
+
+<!-- Container para as notificações toast -->
+<div class="toast-container position-fixed top-0 end-0 p-3"></div>

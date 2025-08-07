@@ -1,0 +1,134 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="mb-0">
+            <i class="bi bi-person-plus me-2"></i>
+            {{ editando ? 'Editar Contato' : 'Novo Contato' }}
+          </h3>
+        </div>
+        <div class="card-body">
+          <!-- Loading -->
+          <div *ngIf="carregando && editando" class="text-center py-3">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Carregando...</span>
+            </div>
+            <p class="mt-2">Carregando dados do contato...</p>
+          </div>
+
+          <!-- Formulário -->
+          <form [formGroup]="contatoForm" (ngSubmit)="onSubmit()" *ngIf="!carregando || !editando">
+            <div class="row">
+              <!-- Nome -->
+              <div class="col-12 mb-3">
+                <label for="nome" class="form-label">
+                  <i class="bi bi-person me-1"></i>Nome *
+                </label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="nome"
+                  formControlName="nome"
+                  [class.is-invalid]="isCampoInvalido('nome')"
+                  placeholder="Digite o nome completo">
+                <div class="invalid-feedback" *ngIf="isCampoInvalido('nome')">
+                  {{ getMensagemErro('nome') }}
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="col-12 mb-3">
+                <label for="email" class="form-label">
+                  <i class="bi bi-envelope me-1"></i>Email
+                </label>
+                <input 
+                  type="email" 
+                  class="form-control" 
+                  id="email"
+                  formControlName="email"
+                  [class.is-invalid]="isCampoInvalido('email')"
+                  placeholder="Digite o email">
+                <div class="invalid-feedback" *ngIf="isCampoInvalido('email')">
+                  {{ getMensagemErro('email') }}
+                </div>
+              </div>
+
+              <!-- Celular -->
+              <div class="col-md-6 mb-3">
+                <label for="celular" class="form-label">
+                  <i class="bi bi-telephone me-1"></i>Celular *
+                </label>
+                <input 
+                  type="tel" 
+                  class="form-control" 
+                  id="celular"
+                  formControlName="celular"
+                  (input)="aplicarMascaraCelular($event)"
+                  [class.is-invalid]="isCampoInvalido('celular')"
+                  placeholder="11 9 9999 9999"
+                  maxlength="15">
+                <div class="invalid-feedback" *ngIf="isCampoInvalido('celular')">
+                  {{ getMensagemErro('celular') }}
+                </div>
+                <div class="form-text">Formato: 11 9 9999 9999</div>
+              </div>
+
+              <!-- Telefone -->
+              <div class="col-md-6 mb-3">
+                <label for="telefone" class="form-label">
+                  <i class="bi bi-telephone-fill me-1"></i>Telefone
+                </label>
+                <input 
+                  type="tel" 
+                  class="form-control" 
+                  id="telefone"
+                  formControlName="telefone"
+                  (input)="aplicarMascaraTelefone($event)"
+                  [class.is-invalid]="isCampoInvalido('telefone')"
+                  placeholder="11 9999 9999"
+                  maxlength="13">
+                <div class="invalid-feedback" *ngIf="isCampoInvalido('telefone')">
+                  {{ getMensagemErro('telefone') }}
+                </div>
+                <div class="form-text">Formato: 11 9999 9999</div>
+              </div>
+
+              <!-- Favorito -->
+              <div class="col-12 mb-3">
+                <div class="form-check">
+                  <input 
+                    class="form-check-input" 
+                    type="checkbox" 
+                    id="favorito"
+                    formControlName="favorito">
+                  <label class="form-check-label" for="favorito">
+                    <i class="bi bi-star me-1"></i>Marcar como favorito
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botões -->
+            <div class="d-flex justify-content-between">
+              <button 
+                type="button" 
+                class="btn btn-secondary"
+                (click)="cancelar()">
+                <i class="bi bi-arrow-left me-2"></i>Cancelar
+              </button>
+              <button 
+                type="submit" 
+                class="btn btn-primary"
+                [disabled]="contatoForm.invalid || carregando">
+                <i class="bi bi-check-circle me-2"></i>
+                {{ carregando ? 'Salvando...' : (editando ? 'Atualizar' : 'Salvar') }}
+                <span *ngIf="carregando" class="spinner-border spinner-border-sm ms-2"></span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
