@@ -39,8 +39,10 @@ Sistema de gerenciamento de contatos desenvolvido com Angular (Frontend) e Sprin
    # Linux/Mac
    ./gradlew bootRun
    ```
+   # Usando IDE
+   Executar a classe SistemaAgendamentoApplication.java
 
-3. **O backend estará disponível em**: `http://localhost:8080`
+4. **O backend estará disponível em**: `http://localhost:8080`
 
 ### 🎨 Frontend (Angular)
 
